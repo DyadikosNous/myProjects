@@ -1,0 +1,29 @@
+import socket
+
+# Set up the server
+HOST = 'localhost'
+PORT = 5000
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((HOST, PORT))
+s.listen(1)
+
+# Wait for a client to connect
+print('Waiting for a connection...')
+conn, addr = s.accept()
+print('Connected by', addr)
+
+# Send and receive messages
+while True:
+    # Receive a message from the client
+    data = conn.recv(1024)
+    if not data:
+        break
+    print(f'Received message: {data.decode()}')
+    
+    # Send a message back to the client
+    message = input('Enter a message to send: ')
+    conn.sendall(message.encode())
+
+# Clean up
+print('Connection closed.')
+conn.close()
